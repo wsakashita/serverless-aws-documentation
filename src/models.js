@@ -11,6 +11,7 @@ module.exports = {
         ContentType: model.contentType,
         Name: model.name,
         Schema: model.schema,
+        DependsOn: model.dependsOn?Array.of(model.dependsOn).map(val => {return `${val}Model`}):[],
       },
     };
   },
