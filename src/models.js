@@ -2,7 +2,7 @@
 
 module.exports = {
   createCfModel: function createCfModel(model) {
-    return {
+    const _response = {
       Type: 'AWS::ApiGateway::Model',
       Properties: {
         RestApiId: {
@@ -10,10 +10,14 @@ module.exports = {
         },
         ContentType: model.contentType,
         Name: model.name,
-        Schema: model.schema,
-        DependsOn: model.dependsOn?Array.of(model.dependsOn).map(val => {return `${val}Model`}):[],
+        Schema: model.schema
       },
+      DependsOn: model.dependsOn ? model.dependsOn.map(val => { return `${val}Model` }) : []
     };
+    if (_response.DependsOn.length === 0) {
+      delete _response.DependsOn;
+    }
+    return _response;
   },
 
   addModelDependencies: function addModelDependencies(models, resource) {
